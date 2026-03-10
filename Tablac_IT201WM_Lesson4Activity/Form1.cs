@@ -6,7 +6,6 @@ namespace Tablac_IT201WM_Lesson4Activity
 {
     public partial class Form1 : Form
     {
-        // Global variable for the photo
         string picpath;
 
         public Form1()
