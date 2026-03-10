@@ -28,69 +28,82 @@ namespace Tablac_IT201WM_Lesson4Activity
 
         private void calculateBtn_Click(object sender, EventArgs e)
         {
-            if (empNum.Text == "" || basicRate.Text == "")
+            if (empNum.Text == "" || firstName.Text == "" || surname.Text == "" || basicRate.Text == "" || basicNumhrs.Text == "")
             {
-                MessageBox.Show("Please fill in Employee Number and Basic Rate.", "Missing Data");
+                MessageBox.Show("Please fill out the Employee Details and Basic Pay.", "Input Required");
                 return;
             }
 
             try
             {
-                double rate = double.Parse(basicRate.Text);
-                double hours = double.Parse(basicNumhrs.Text);
-                double basicTotal = rate * hours;
-                basicIncome.Text = basicTotal.ToString("0.00");
+                double basicRatePerHour = double.Parse(basicRate.Text);
+                double basicHoursWorked = double.Parse(basicNumhrs.Text);
+                double totalBasicIncome = basicRatePerHour * basicHoursWorked;
 
-                double hRate = 0;
-                double hHours = 0;
-                if (honoRate.Text != "") hRate = double.Parse(honoRate.Text);
-                if (honoNumhrs.Text != "") hHours = double.Parse(honoNumhrs.Text);
-                double honoTotal = hRate * hHours;
-                honoIncome.Text = honoTotal.ToString("0.00");
+                basicIncome.Text = totalBasicIncome.ToString("0.00");
 
-                double oRate = 0;
-                double oHours = 0;
-                if (otherRate.Text != "") oRate = double.Parse(otherRate.Text);
-                if (otherNumhrs.Text != "") oHours = double.Parse(otherNumhrs.Text);
-                double otherTotal = oRate * oHours;
-                otherIncome.Text = otherTotal.ToString("0.00");
+                double honorariumRate = 0;
+                double honorariumHours = 0;
+                if (honoRate.Text != "") honorariumRate = double.Parse(honoRate.Text);
+                if (honoNumhrs.Text != "") honorariumHours = double.Parse(honoNumhrs.Text);
 
-                double gross = basicTotal + honoTotal + otherTotal;
-                grossIncome.Text = gross.ToString("0.00");
+                double totalHonorariumIncome = honorariumRate * honorariumHours;
 
-                double taxAmount = gross * 0.01;
-                tax.Text = taxAmount.ToString("0.00");
+                honoIncome.Text = totalHonorariumIncome.ToString("0.00");
 
-                double sssValue = 0;
-                double phValue = 0;
-                double pagValue = 0;
-                if (sssContrib.Text != "") sssValue = double.Parse(sssContrib.Text);
-                if (ph.Text != "") phValue = double.Parse(ph.Text);
-                if (pagibigContrib.Text != "") pagValue = double.Parse(pagibigContrib.Text);
+                double otherRatePerHour = 0;
+                double otherHoursWorked = 0;
+                if (otherRate.Text != "") otherRatePerHour = double.Parse(otherRate.Text);
+                if (otherNumhrs.Text != "") otherHoursWorked = double.Parse(otherNumhrs.Text);
 
-                double sssL = 0;
-                double pagL = 0;
-                double fDep = 0;
-                double fLoan = 0;
-                double salL = 0;
-                double othD = 0;
+                double totalOtherIncome = otherRatePerHour * otherHoursWorked;
 
-                if (sssLoan.Text != "") sssL = double.Parse(sssLoan.Text);
-                if (pagibigLoan.Text != "") pagL = double.Parse(pagibigLoan.Text);
-                if (fsDeposit.Text != "") fDep = double.Parse(fsDeposit.Text);
-                if (fsLoan.Text != "") fLoan = double.Parse(fsLoan.Text);
-                if (salaryLoan.Text != "") salL = double.Parse(salaryLoan.Text);
-                if (others_txtbox.Text != "") othD = double.Parse(others_txtbox.Text);
+                otherIncome.Text = totalOtherIncome.ToString("0.00");
 
-                double totalDeductions = sssValue + phValue + pagValue + taxAmount + sssL + pagL + fDep + fLoan + salL + othD;
-                totalDeduc.Text = totalDeductions.ToString("0.00");
+                double overallGrossIncome = totalBasicIncome + totalHonorariumIncome + totalOtherIncome;
 
-                double net = gross - totalDeductions;
-                netIncome.Text = net.ToString("0.00");
+                grossIncome.Text = overallGrossIncome.ToString("0.00");
+
+                double sssContributionValue = 0;
+                double philHealthValue = 0;
+                double pagibigContributionValue = 0;
+                double calculatedTaxAmount = overallGrossIncome * 0.01;
+
+                if (sssContrib.Text != "") sssContributionValue = double.Parse(sssContrib.Text);
+                if (ph.Text != "") philHealthValue = double.Parse(ph.Text);
+                if (pagibigContrib.Text != "") pagibigContributionValue = double.Parse(pagibigContrib.Text);
+
+                tax.Text = calculatedTaxAmount.ToString("0.00");
+
+                double sssLoanValue = 0;
+                double pagibigLoanValue = 0;
+                double facultySavingsDepositValue = 0;
+                double facultySavingsLoanValue = 0;
+                double salaryLoanValue = 0;
+                double miscellaneousDeductionsValue = 0;
+
+                if (sssLoan.Text != "") sssLoanValue = double.Parse(sssLoan.Text);
+                if (pagibigLoan.Text != "") pagibigLoanValue = double.Parse(pagibigLoan.Text);
+                if (fsDeposit.Text != "") facultySavingsDepositValue = double.Parse(fsDeposit.Text);
+                if (fsLoan.Text != "") facultySavingsLoanValue = double.Parse(fsLoan.Text);
+                if (salaryLoan.Text != "") salaryLoanValue = double.Parse(salaryLoan.Text);
+                if (others_txtbox.Text != "") miscellaneousDeductionsValue = double.Parse(others_txtbox.Text);
+
+                double totalDeductionsAmount =
+                    sssContributionValue + philHealthValue +
+                    pagibigContributionValue + calculatedTaxAmount +
+                    sssLoanValue + pagibigLoanValue +
+                    facultySavingsDepositValue + facultySavingsLoanValue +
+                    salaryLoanValue + miscellaneousDeductionsValue;
+
+                totalDeduc.Text = totalDeductionsAmount.ToString("0.00");
+
+                double finalNetIncomeValue = overallGrossIncome - totalDeductionsAmount;
+                netIncome.Text = finalNetIncomeValue.ToString("0.00");
             }
             catch (Exception)
             {
-                MessageBox.Show("Please enter numbers only.", "Error");
+                MessageBox.Show("Invalid input detected. Please enter numbers only.", "Format Error");
             }
         }
 
